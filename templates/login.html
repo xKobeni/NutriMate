@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>NutriMate Login</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-br from-green-100 via-lime-100 to-emerald-200 min-h-screen">
+    <!-- Fixed Navigation -->
+    <nav class="fixed w-full bg-white z-50 py-3 border-b border-gray-100 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between">
+                <!-- Logo -->
+                <a href="/" class="flex items-center space-x-2">
+                    <div class="w-10 h-10 bg-gradient-to-tr from-green-400 to-teal-300 rounded-xl flex items-center justify-center">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <circle cx="12" cy="12" r="10" stroke-width="2" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h8M12 8v8" />
+                        </svg>
+                    </div>
+                    <span class="text-xl font-bold text-gray-900">NutriMate</span>
+                </a>
+                <!-- Back to Home Link -->
+                <a href="/" class="text-gray-700 hover:text-green-600 font-medium">Back to Home</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="pt-32 flex items-center justify-center min-h-screen">
+        <div class="w-full max-w-md mx-auto bg-white rounded-2xl shadow-lg p-8">
+            <div class="flex flex-col items-center mb-6">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-14 w-14 text-green-500 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                </svg>
+                <h1 class="text-3xl font-bold text-green-700 mb-1">NutriMate</h1>
+                <p class="text-gray-500 text-sm text-center">A Machine Learning-Powered Meal Planner</p>
+            </div>
+            <h2 class="text-xl font-semibold text-gray-700 mb-4 text-center">Login to your account</h2>
+            {% if error %}
+                <div class="bg-red-100 text-red-700 px-4 py-2 rounded mb-4 text-center">{{ error }}</div>
+            {% endif %}
+            <form method="post" class="space-y-4">
+                <div>
+                    <label for="email" class="block text-gray-600 mb-1">Email</label>
+                    <input type="email" name="email" id="email" placeholder="Email" required class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-green-400">
+                </div>
+                <div>
+                    <label for="password" class="block text-gray-600 mb-1">Password</label>
+                    <div class="relative">
+                        <input type="password" name="password" id="password" placeholder="Password" required class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-green-400 pr-10">
+                        <div class="absolute inset-y-0 right-0 flex items-center pr-3">
+                            <button type="button" onclick="togglePassword('password', this)" tabindex="-1" class="text-gray-400 hover:text-green-600 focus:outline-none">
+                                <svg id="password-eye" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <script>
+                function togglePassword(id, btn) {
+                    const input = document.getElementById(id);
+                    const svg = btn.querySelector('svg');
+                    if (input.type === 'password') {
+                        input.type = 'text';
+                        svg.innerHTML = `<path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.542-7a9.956 9.956 0 012.293-3.95M6.873 6.876A9.956 9.956 0 0112 5c4.478 0 8.268 2.943 9.542 7a9.956 9.956 0 01-4.293 5.95M15 12a3 3 0 11-6 0 3 3 0 016 0z' /><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M3 3l18 18' />`;
+                    } else {
+                        input.type = 'password';
+                        svg.innerHTML = `<path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M15 12a3 3 0 11-6 0 3 3 0 016 0z' /><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z' />`;
+                    }
+                }
+                </script>
+                <button type="submit" class="w-full bg-green-500 hover:bg-green-600 text-white font-semibold py-2 rounded transition">Login</button>
+            </form>
+            <div class="mt-4 text-center">
+                <a href="{{ url_for('auth.register') }}" class="text-green-600 hover:underline text-sm">Don't have an account? Register</a>
+            </div>
+            <div class="mt-6 text-center text-gray-400 text-xs">
+                &copy; {{ 2024 }} NutriMate. Eat smart, live better.
+            </div>
+        </div>
+    </div>
+</body>
+</html> 
