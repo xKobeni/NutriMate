@@ -1,0 +1,49 @@
+NutriMate
+A Machine Learning-Powered Personalized Meal Planner
+Overview
+NutriMate is a web-based application that provides personalized meal plans to users based on their health goals, dietary preferences, and allergies. It leverages machine learning models to recommend optimal meal combinations and predict the user’s daily caloric needs. The system ensures that users receive healthy, suitable, and goal-aligned meals to promote better nutrition and health outcomes.
+With the growing emphasis on healthy living, NutriMate empowers users to make informed dietary choices through automation and AI, making personalized nutrition accessible and easy.
+Goals
+To develop a user-friendly web platform for meal planning based on individual inputs.
+To recommend meals using machine learning algorithms based on user profiles and preferences.
+To predict daily calorie requirements using regression analysis.
+To allow users to filter out allergens and match goals like weight loss, muscle gain, or maintenance.
+To provide nutrition-conscious meal plans based on dietary constraints and user history.
+System Features Overview:
+Home
+Landing page with intro and login/register prompts.
+User Registration/Login
+Secure account creation and login system.
+Profile Setup
+Users input age, weight, height, gender, activity level, preferences, allergies, and goals.
+Calorie Prediction
+Predicts daily caloric need using the ML regression model.
+Meal Recommendation
+Suggests meals based on predicted needs and preferences.
+Meal Filtering
+Users can exclude meals containing certain allergens or exceeding calorie limits.
+Machine Learning Techniques:
+Meal Recommendation - Content-Based Filtering
+Calorie Need Prediction - Regression
+Goal-Based Diet Prediction - Classification
+Clustering Meals/Users - Clustering
+Model 1: Calorie Needs Prediction
+Regression Model – Linear Regression (can later upgrade to Random Forest Regressor)
+Input Features: 
+Age - 	Integer
+Gender - Categorical (encoded)
+Height (cm) - Numeric
+Weight (kg) - Numeric
+Activity Level - Ordinal
+Goal (e.g. lose/gain/maintain) - Categorical (encoded)
+Output:
+Daily recommended calorie intake (kcal)
+Model 2: Meal Recommendation Engine
+Content-Based Filtering – Using TF-IDF + Cosine Similarity
+Input Features: 
+Meal Name - 	String
+Ingredients - Text
+Calories - Numeric
+Tags (e.g. vegan, gluten-free) - String/Array
+Output:
+Top-N meal recommendations based on user filters

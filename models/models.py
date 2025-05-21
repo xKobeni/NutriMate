@@ -25,6 +25,21 @@ def init_db():
             password TEXT NOT NULL
         )
     ''')
+
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS user_profile (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_id INTEGER NOT NULL,
+            name TEXT,
+            age INTEGER,
+            gender TEXT,
+            weight REAL,
+            height REAL,
+            activity_level TEXT,
+            FOREIGN KEY (user_id) REFERENCES user (id)
+        )
+    ''')
+        
     
     # Create preferences table
     cursor.execute('''
@@ -38,9 +53,58 @@ def init_db():
             FOREIGN KEY (user_id) REFERENCES user (id)
         )
     ''')
-    
+
+
+    # Meals table
+    cursor.execute('''
+    CREATE TABLE IF NOT EXISTS meal (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        food_name TEXT NOT NULL,
+        category TEXT,
+        meal_type TEXT,
+        calories REAL,
+        protein REAL,
+        carbs REAL,
+        fat REAL,
+        fiber REAL,
+        sugar REAL,
+        sodium REAL,
+        cholesterol REAL
+        )
+    ''')
+
+    # Create meal_log table
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS meal_log (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_id INTEGER NOT NULL,
+            meal_id INTEGER NOT NULL,
+            quantity INTEGER NOT NULL,
+            date TEXT NOT NULL,
+            meal_type TEXT,
+            FOREIGN KEY (user_id) REFERENCES user (id),
+            FOREIGN KEY (meal_id) REFERENCES meal (id)
+            )
+    ''')
+
+    # Create water_log table
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS water_log (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_id INTEGER NOT NULL,
+            glasses INTEGER NOT NULL,
+            date TEXT NOT NULL,
+            FOREIGN KEY (user_id) REFERENCES user (id)
+        )
+    ''')
+
+
+# Commit and close connection    
     conn.commit()
     conn.close()
+
+
+
 
 def create_user(email, password):
     conn = get_db_connection()

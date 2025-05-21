@@ -1,0 +1,244 @@
+🧭 User Flow Documentation – NutriMate
+📄 Narrative Description
+NutriMate offers users a personalized meal planning experience powered by machine learning. When a new user accesses the system, they are prompted to register by providing an email and a secure password. After logging in, users are guided to set up their dietary preferences. This includes specifying their dietary type (such as vegetarian or keto), allergies (like nuts or dairy), health goals (e.g., weight loss, muscle gain, or maintenance), and a desired daily calorie limit.
+
+Once the user submits these preferences, the system stores them in the database. The machine learning engine then processes these inputs, compares them with a structured dataset of food items, and recommends a personalized daily meal plan. Each plan consists of meals that match the user’s nutritional goals while avoiding allergens and staying within the user’s specified calorie range.
+
+Users can view their recommended meal plans, check detailed nutritional values, and optionally regenerate or update their preferences at any time. The system also allows users to log meals, providing a form of progress tracking. Over time, the platform may incorporate feedback from the user to refine and improve recommendations.
+
+📌 Bullet Point Breakdown of the User Flow
+1. User Registration and Login
+User visits the homepage.
+
+User registers by entering:
+
+Email address
+
+Password
+
+On success, user logs into their account.
+
+User credentials are securely stored in the user table.
+
+2. User Profile and Preferences Setup
+After login, user is redirected to the Preferences Setup page.
+
+User fills out the form with:
+
+Dietary type (e.g., vegetarian, keto)
+
+Allergies (comma-separated list)
+
+Health goal (weight loss, muscle gain, maintain)
+
+Calorie limit (optional, can be estimated automatically)
+
+These inputs are stored in the preference table and linked to the user.
+
+3. ML-Driven Recommendation Process
+System retrieves user preferences.
+
+ML model is loaded (e.g., clustering algorithm trained on nutrition data).
+
+The system filters meals based on:
+
+User’s allergies
+
+Diet type
+
+Calorie range
+
+Matching meals from relevant ML clusters
+
+Personalized meal plan is generated:
+
+Breakfast, lunch, dinner, and 1–2 snacks
+
+Macros and calories are balanced according to goals
+
+4. Meal Plan Display
+User views their personalized meal plan.
+
+Each meal includes:
+
+Meal name
+
+Calories, protein, carbs, fat
+
+Meal tags (e.g., gluten-free, high protein)
+
+User can:
+
+Regenerate a new meal plan
+
+Update profile/preferences
+
+
+-------------------------------------------------------------------------------------------------------------------
+
+
+🤖 Machine Learning Flow Documentation – NutriMate
+📄 Narrative Description
+The machine learning (ML) component of NutriMate plays a central role in generating personalized meal recommendations based on users’ dietary preferences, health goals, and nutritional requirements. Once a user submits their profile data (including diet type, allergies, goal, and calorie limit), the system processes this input and matches it with a curated dataset of food items. This dataset includes nutritional values like calories, macronutrients, and food categories.
+
+A clustering algorithm (such as K-Means) is first used during the model training phase to categorize meals into groups based on nutritional similarity (e.g., low-carb, high-protein, balanced, etc.). When a user inputs their preferences, the ML model predicts which cluster(s) best fit the user’s dietary profile.
+
+From the matched clusters, the system filters out meals that contain allergens or exceed the calorie range. The result is a set of meal recommendations that align with the user’s health goals. In future improvements, the system could incorporate feedback loops and predictive modeling (e.g., decision trees, collaborative filtering) to adapt to user behavior over time.
+
+📌 Bullet Point Breakdown of Machine Learning Flow
+1. Data Preprocessing
+Load the food dataset (daily_food_nutrition_dataset.csv)
+
+Clean data:
+
+Remove missing or invalid entries
+
+Normalize nutritional values (e.g., scale calories, protein, etc.)
+
+Encode categorical values (e.g., diet type, food category)
+
+2. Model Selection and Training (Offline)
+Use K-Means Clustering to group meals into clusters based on:
+
+Calories
+
+Protein
+
+Carbohydrates
+
+Fat
+
+Each cluster represents a specific nutritional profile (e.g., high-protein, low-carb)
+
+Save the trained model using joblib or pickle
+
+3. User Input Processing (Online/Runtime)
+User submits:
+
+Diet type
+
+Allergies
+
+Health goal (e.g., lose weight)
+
+Calorie range
+
+System prepares the input vector and selects matching cluster(s)
+
+4. Meal Filtering & Recommendation
+Filter out meals from the matched cluster that:
+
+Contain allergens
+
+Exceed user-defined calorie limit
+
+Prioritize meals that:
+
+Match goal-specific macronutrient distribution (e.g., high-protein for muscle gain)
+
+Generate a list of meals for the day:
+
+Breakfast, Lunch, Dinner, and optional snacks
+
+-------------------------------------------------------------------------------------------------------------------
+
+
+🔁 Prediction and Recommendation Flow – NutriMate
+📄 Narrative Description
+The prediction and recommendation flow in NutriMate is the heart of the system’s intelligent decision-making. After the user submits their dietary preferences—including calorie target, allergies, diet type, and health goal—the system utilizes a pre-trained machine learning model (such as a K-Means clustering model) to predict the most suitable nutritional cluster for the user. This cluster represents meals that match the user's macronutrient balance and health objectives.
+
+Once the matching cluster(s) are determined, the system filters the dataset to remove meals that conflict with the user’s allergies or exceed their calorie threshold. From the remaining options, NutriMate intelligently selects meals across different categories (breakfast, lunch, dinner, and snacks) to create a complete daily meal plan. Each recommended meal is then shown with detailed nutritional information, aligned with the user’s personal goals (e.g., weight loss, gain muscle, maintain weight).
+
+In future versions, the recommendation system can incorporate real-time feedback (likes/dislikes) to adjust predictions dynamically using supervised learning or reinforcement learning models.
+
+📌 Bullet Point Breakdown of Prediction & Recommendation Flow
+1. User Profile Submission
+User completes a preferences form:
+
+Diet type (e.g., vegetarian, keto)
+
+Allergies (e.g., dairy, peanuts)
+
+Health goal (e.g., weight loss)
+
+Calorie limit (optional/customizable)
+
+2. Input Vector Formation
+Backend prepares a structured input from user preferences.
+
+Normalize/encode values to match the format used during ML model training.
+
+3. Prediction: Cluster Selection
+Load pre-trained K-Means (or other clustering) model.
+
+Use user input to predict the best-fit cluster of meals based on:
+
+Macronutrient distribution (protein, carbs, fat)
+
+Calorie range
+
+Health objective
+
+4. Filtering Logic
+Query dataset for meals within the predicted cluster.
+
+Apply filters:
+
+Remove meals that contain any of the user’s listed allergies.
+
+Filter meals that exceed the calorie limit (per meal or total for the day).
+
+Ensure meals match the user’s diet type.
+
+5. Meal Selection & Assembly
+From filtered meals:
+
+Select 1 breakfast, 1 lunch, 1 dinner, and optionally 1–2 snacks.
+
+Ensure total caloric intake aligns with the user’s target (±10% buffer).
+
+Optional: Prioritize meals with balanced macros for the selected goal (e.g., more protein for muscle gain).
+
+6. Display Recommendations
+Render a personalized meal plan to the frontend:
+
+Show food name, image (if available), calorie, protein, carbs, fat
+
+🔍 Example Workflow
+User Input:
+
+Goal: Weight Loss
+
+Diet: Vegetarian
+
+Allergy: Peanuts
+
+Calories/day: 1400 kcal
+
+Prediction:
+
+Model selects Cluster 2: Low-calorie, high-protein meals
+
+Filter:
+
+Removes meals with peanuts or exceeding 500 kcal/meal
+
+Recommend:
+
+Breakfast: Veggie omelette (200 kcal)
+
+Lunch: Quinoa salad (450 kcal)
+
+Dinner: Tofu stir fry (500 kcal)
+
+Snack: Apple slices with almond butter (250 kcal)
+
+
+
+
+
+
+Setting up the preferences system
+Creating the meal recommendation system
+Implementing the meal logging functionality
+Setting up the ML pipeline

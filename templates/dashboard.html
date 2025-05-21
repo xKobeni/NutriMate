@@ -1,26 +1,223 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>NutriMate Dashboard</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gradient-to-br from-green-100 via-lime-100 to-emerald-200 min-h-screen flex items-center justify-center">
-    <div class="w-full max-w-lg mx-auto bg-white rounded-2xl shadow-lg p-8">
-        <div class="flex flex-col items-center mb-6">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-14 w-14 text-green-500 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-            </svg>
-            <h1 class="text-3xl font-bold text-green-700 mb-1">NutriMate Dashboard</h1>
-            <p class="text-gray-500 text-sm text-center">Welcome, <span class="font-semibold">{{ email }}</span>!</p>
-        </div>
-        <div class="text-center mt-8">
-            <a href="{{ url_for('logout') }}" class="inline-block bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-6 rounded transition">Logout</a>
-        </div>
-        <div class="mt-6 text-center text-gray-400 text-xs">
-            &copy; {{ 2024 }} NutriMate. Eat smart, live better.
+{% extends "base.html" %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-50 py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Left Column: Profile & Preferences -->
+            <div class="space-y-8">
+                <!-- Profile Summary -->
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+                    <div class="bg-gradient-to-tr from-green-400 to-teal-400 px-6 py-4">
+                        <div class="flex justify-between items-center">
+                            <h3 class="text-xl font-semibold text-white">Profile Summary</h3>
+                            <a href="{{ url_for('profile.profile') }}" class="bg-white text-green-600 px-4 py-2 rounded-full text-sm font-medium hover:bg-green-50 transition-colors">
+                                Edit Profile
+                            </a>
+                        </div>
+                    </div>
+                    <div class="p-6 space-y-4">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+                                <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                </svg>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-500">Name</p>
+                                <p class="font-medium text-gray-900">{{ profile.name }}</p>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <p class="text-sm text-gray-500">Age</p>
+                                <p class="font-medium text-gray-900">{{ profile.age }} years</p>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-500">Gender</p>
+                                <p class="font-medium text-gray-900">{{ profile.gender|title }}</p>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-500">Weight</p>
+                                <p class="font-medium text-gray-900">{{ profile.weight }} kg</p>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-500">Height</p>
+                                <p class="font-medium text-gray-900">{{ profile.height }} cm</p>
+                            </div>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-500">Activity Level</p>
+                            <p class="font-medium text-gray-900">{{ profile.activity_level|title }}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dietary Preferences -->
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+                    <div class="bg-gradient-to-tr from-green-400 to-teal-400 px-6 py-4">
+                        <div class="flex justify-between items-center">
+                            <h3 class="text-xl font-semibold text-white">Dietary Preferences</h3>
+                            <a href="{{ url_for('preferences.preferences') }}" class="bg-white text-green-600 px-4 py-2 rounded-full text-sm font-medium hover:bg-green-50 transition-colors">
+                                Edit Preferences
+                            </a>
+                        </div>
+                    </div>
+                    <div class="p-6 space-y-4">
+                        <div>
+                            <p class="text-sm text-gray-500">Diet Type</p>
+                            <p class="font-medium text-gray-900">{{ preferences.diet_type|title }}</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-500">Health Goal</p>
+                            <p class="font-medium text-gray-900">{{ preferences.goal|title }}</p>
+                        </div>
+                        {% if preferences.allergies %}
+                        <div>
+                            <p class="text-sm text-gray-500">Allergies</p>
+                            <div class="flex flex-wrap gap-2 mt-1">
+                                {% for allergy in preferences.allergies.split(',') %}
+                                <span class="px-3 py-1 bg-red-50 text-red-600 rounded-full text-sm">{{ allergy.strip() }}</span>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        {% endif %}
+                        {% if preferences.calorie_limit %}
+                        <div>
+                            <p class="text-sm text-gray-500">Daily Calorie Limit</p>
+                            <p class="font-medium text-gray-900">{{ preferences.calorie_limit }} kcal</p>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: Calorie Calculations -->
+            <div class="lg:col-span-2 space-y-8">
+                <!-- BMR and TDEE -->
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+                    <div class="bg-gradient-to-tr from-green-400 to-teal-400 px-6 py-4">
+                        <h3 class="text-xl font-semibold text-white">Daily Energy Needs</h3>
+                    </div>
+                    <div class="p-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="bg-gray-50 rounded-xl p-6">
+                                <div class="flex items-center space-x-3 mb-4">
+                                    <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+                                        <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                                        </svg>
+                                    </div>
+                                    <h4 class="text-lg font-medium text-gray-900">Basal Metabolic Rate (BMR)</h4>
+                                </div>
+                                <p class="text-3xl font-bold text-gray-900">{{ calorie_data.bmr }}</p>
+                                <p class="text-sm text-gray-500 mt-1">calories/day</p>
+                            </div>
+                            <div class="bg-gray-50 rounded-xl p-6">
+                                <div class="flex items-center space-x-3 mb-4">
+                                    <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+                                        <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                                        </svg>
+                                    </div>
+                                    <h4 class="text-lg font-medium text-gray-900">Total Daily Energy Expenditure (TDEE)</h4>
+                                </div>
+                                <p class="text-3xl font-bold text-gray-900">{{ calorie_data.tdee }}</p>
+                                <p class="text-sm text-gray-500 mt-1">calories/day</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Calorie Goals -->
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+                    <div class="bg-gradient-to-tr from-green-400 to-teal-400 px-6 py-4">
+                        <h3 class="text-xl font-semibold text-white">Calorie Goals</h3>
+                    </div>
+                    <div class="p-6">
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div class="bg-gray-50 rounded-xl p-6">
+                                <h4 class="text-lg font-medium text-gray-900 mb-4">Weight Loss</h4>
+                                <p class="text-3xl font-bold text-gray-900">{{ calorie_data.recommendations.lose.calories }}</p>
+                                <p class="text-sm text-gray-500 mt-1">calories/day</p>
+                            </div>
+                            <div class="bg-gray-50 rounded-xl p-6">
+                                <h4 class="text-lg font-medium text-gray-900 mb-4">Maintenance</h4>
+                                <p class="text-3xl font-bold text-gray-900">{{ calorie_data.recommendations.maintain.calories }}</p>
+                                <p class="text-sm text-gray-500 mt-1">calories/day</p>
+                            </div>
+                            <div class="bg-gray-50 rounded-xl p-6">
+                                <h4 class="text-lg font-medium text-gray-900 mb-4">Weight Gain</h4>
+                                <p class="text-3xl font-bold text-gray-900">{{ calorie_data.recommendations.gain.calories }}</p>
+                                <p class="text-sm text-gray-500 mt-1">calories/day</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Macronutrient Distribution -->
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+                    <div class="bg-gradient-to-tr from-green-400 to-teal-400 px-6 py-4">
+                        <h3 class="text-xl font-semibold text-white">Recommended Macronutrient Distribution</h3>
+                    </div>
+                    <div class="p-6">
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div class="bg-gray-50 rounded-xl p-6">
+                                <h4 class="text-lg font-medium text-gray-900 mb-4">Weight Loss</h4>
+                                <div class="space-y-3">
+                                    <div>
+                                        <p class="text-sm text-gray-500">Protein</p>
+                                        <p class="text-xl font-bold text-gray-900">{{ calorie_data.recommendations.lose.protein }}g</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm text-gray-500">Carbs</p>
+                                        <p class="text-xl font-bold text-gray-900">{{ calorie_data.recommendations.lose.carbs }}g</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm text-gray-500">Fat</p>
+                                        <p class="text-xl font-bold text-gray-900">{{ calorie_data.recommendations.lose.fat }}g</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bg-gray-50 rounded-xl p-6">
+                                <h4 class="text-lg font-medium text-gray-900 mb-4">Maintenance</h4>
+                                <div class="space-y-3">
+                                    <div>
+                                        <p class="text-sm text-gray-500">Protein</p>
+                                        <p class="text-xl font-bold text-gray-900">{{ calorie_data.recommendations.maintain.protein }}g</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm text-gray-500">Carbs</p>
+                                        <p class="text-xl font-bold text-gray-900">{{ calorie_data.recommendations.maintain.carbs }}g</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm text-gray-500">Fat</p>
+                                        <p class="text-xl font-bold text-gray-900">{{ calorie_data.recommendations.maintain.fat }}g</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bg-gray-50 rounded-xl p-6">
+                                <h4 class="text-lg font-medium text-gray-900 mb-4">Weight Gain</h4>
+                                <div class="space-y-3">
+                                    <div>
+                                        <p class="text-sm text-gray-500">Protein</p>
+                                        <p class="text-xl font-bold text-gray-900">{{ calorie_data.recommendations.gain.protein }}g</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm text-gray-500">Carbs</p>
+                                        <p class="text-xl font-bold text-gray-900">{{ calorie_data.recommendations.gain.carbs }}g</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm text-gray-500">Fat</p>
+                                        <p class="text-xl font-bold text-gray-900">{{ calorie_data.recommendations.gain.fat }}g</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-</body>
-</html> 
+</div>
+{% endblock %} 

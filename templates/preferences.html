@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-50 py-8">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+            <div class="bg-gradient-to-tr from-green-400 to-teal-400 px-6 py-4">
+                <h2 class="text-2xl font-bold text-white">Dietary Preferences</h2>
+            </div>
+            <div class="p-6">
+                <form method="POST" class="space-y-6">
+                    <!-- Diet Type -->
+                    <div>
+                        <label for="diet_type" class="block text-sm font-medium text-gray-700">Diet Type</label>
+                        <select name="diet_type" id="diet_type" required
+                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500">
+                            <option value="">Select diet type</option>
+                            <option value="regular" {% if preferences and preferences.diet_type == 'regular' %}selected{% endif %}>Regular</option>
+                            <option value="vegetarian" {% if preferences and preferences.diet_type == 'vegetarian' %}selected{% endif %}>Vegetarian</option>
+                            <option value="vegan" {% if preferences and preferences.diet_type == 'vegan' %}selected{% endif %}>Vegan</option>
+                            <option value="keto" {% if preferences and preferences.diet_type == 'keto' %}selected{% endif %}>Keto</option>
+                            <option value="paleo" {% if preferences and preferences.diet_type == 'paleo' %}selected{% endif %}>Paleo</option>
+                            <option value="mediterranean" {% if preferences and preferences.diet_type == 'mediterranean' %}selected{% endif %}>Mediterranean</option>
+                        </select>
+                    </div>
+
+                    <!-- Allergies -->
+                    <div>
+                        <label for="allergies" class="block text-sm font-medium text-gray-700">Allergies (comma-separated)</label>
+                        <input type="text" name="allergies" id="allergies" 
+                            value="{{ preferences.allergies if preferences else '' }}"
+                            placeholder="e.g., peanuts, shellfish, dairy"
+                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500">
+                        <p class="mt-1 text-sm text-gray-500">Enter any food allergies, separated by commas</p>
+                    </div>
+
+                    <!-- Health Goal -->
+                    <div>
+                        <label for="goal" class="block text-sm font-medium text-gray-700">Health Goal</label>
+                        <select name="goal" id="goal" required
+                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500">
+                            <option value="">Select health goal</option>
+                            <option value="lose_weight" {% if preferences and preferences.goal == 'lose_weight' %}selected{% endif %}>Lose Weight</option>
+                            <option value="maintain" {% if preferences and preferences.goal == 'maintain' %}selected{% endif %}>Maintain Weight</option>
+                            <option value="gain_weight" {% if preferences and preferences.goal == 'gain_weight' %}selected{% endif %}>Gain Weight</option>
+                            <option value="build_muscle" {% if preferences and preferences.goal == 'build_muscle' %}selected{% endif %}>Build Muscle</option>
+                        </select>
+                    </div>
+
+                    <!-- Calorie Limit -->
+                    <div>
+                        <label for="calorie_limit" class="block text-sm font-medium text-gray-700">Daily Calorie Limit (optional)</label>
+                        <input type="number" name="calorie_limit" id="calorie_limit" 
+                            value="{{ preferences.calorie_limit if preferences else '' }}"
+                            min="1000" max="5000" step="50"
+                            placeholder="e.g., 2000"
+                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500">
+                        <p class="mt-1 text-sm text-gray-500">Set a daily calorie limit (1000-5000 calories)</p>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="flex justify-end">
+                        <button type="submit" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-full shadow-sm text-white bg-gradient-to-r from-green-500 to-teal-500 hover:from-green-600 hover:to-teal-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
+                            Save Preferences
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 
